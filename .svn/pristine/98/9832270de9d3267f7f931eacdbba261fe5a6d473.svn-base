@@ -27,9 +27,9 @@ namespace BudgetCalculator
         {
             InitializeComponent();
             fileManager.LoadFile("config.txt");
-            RemainingWeekTextBox.IsReadOnly = true;
             dayManager = fileManager.GetTransactions();
         }
+
 
         decimal remainingThisWeek;
         private void Cal_SelectionChanged(object sender, System.EventArgs e)
@@ -102,6 +102,15 @@ namespace BudgetCalculator
                 }
                 TransactionTextBox.Clear();
             }
+        }
+    }
+    partial class App : Application
+    {
+        private void CloseConfirmation (object sender, ExitEventArgs e)
+        {
+            FileManager fileManager = new FileManager();
+            fileManager.SaveFile("config.txt");
+            MessageBox.Show("e");
         }
     }
 }
