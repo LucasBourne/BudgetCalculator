@@ -104,13 +104,4 @@ namespace BudgetCalculator
             }
         }
     }
-    partial class App : Application
-    {
-        private void CloseConfirmation (object sender, ExitEventArgs e)
-        {
-            FileManager fileManager = new FileManager();
-            fileManager.SaveFile("config.txt");
-            MessageBox.Show("e");
-        }
-    }
 }
