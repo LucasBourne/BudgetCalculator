@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace BudgetCalculator
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        FileManager fileManager = new FileManager();
+        DayManager dayManager = new DayManager();
+        WeekHandler weekHandler = new WeekHandler();
+        public MainWindow()
+        {
+            InitializeComponent();
+            fileManager.LoadFile("config.txt");
+            dayManager = fileManager.GetTransactions();
+        }
+
+
+        decimal remainingThisWeek;
+        private void Cal_SelectionChanged(object sender, System.EventArgs e)
+        {
+            DateTime Selection = Cal.SelectedDate.Value;
+            int SelectedWeek = weekHandler.GetWeekOfYear(Selection);
+            decimal getWeeklySpend = dayManager.GetWeeklyTotal(SelectedWeek);
+            remainingThisWeek = fileManager.GetWeeklyBudget() - getWeeklySpend;
+            if (getWeeklySpend > 0)
+            {
+                RemainingWeekTextBox.Text = "£" + Math.Round(remainingThisWeek, 2);
+            }
+            else
+            {
+                RemainingWeekTextBox.Text = "£" + Math.Round(fileManager.GetWeeklyBudget(), 2);
+            }
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            fileManager.SaveFile("config.txt");
+            this.Close();
+        }
+
+        private void AccessPoolButton_Click(object sender, RoutedEventArgs e)
+        {
+            MoneyPool Pool = fileManager.GetPool();
+            Money_Pool wnd = new Money_Pool(Pool);
+            wnd.Show();
+        }
+
+        private void SubButton_Click(object sender, RoutedEventArgs e)
+        {
+            decimal amount = 0;
+            try
+            {
+                if (Cal.SelectedDate == null)
+                {
+                    MessageBox.Show("Please select a date");
+                }
+                else if (Decimal.Parse(TransactionTextBox.Text) < 0)
+                {
+                    MessageBox.Show("Please enter a valid transaction amount");
+                }
+                else
+                {
+                    amount = Decimal.Parse(TransactionTextBox.Text);
+                    foreach (DayInfo day in dayManager.GetList())
+                    {
+                        if (Cal.SelectedDate == day.GetDate())
+                        {
+                            day.AddSpend(amount);
+                            return;
+                        }
+                    }
+                    DayInfo newDay = new DayInfo(Cal.SelectedDate.Value, amount);
+                    dayManager.AddDay(newDay);
+                    remainingThisWeek -= amount;
+                }
+            }
+            catch (Exception f)
+            {
+                MessageBox.Show("ERROR: " + f.Message);
+            }
+            finally
+            {
+                if (amount > 0)
+                {
+                    RemainingWeekTextBox.Text = "£" + Math.Round(remainingThisWeek, 2);
+                }
+                TransactionTextBox.Clear();
+            }
+        }
+    }
+}

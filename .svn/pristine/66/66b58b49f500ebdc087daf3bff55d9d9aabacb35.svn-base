@@ -1,0 +1,19 @@
+﻿<Window x:Class="BudgetCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BudgetCalculator"
+        mc:Ignorable="d"
+        Title="Budget Calculator" Height="249.745" Width="364.176">
+    <Grid>
+        <Calendar Name="Cal" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" SelectedDatesChanged="Cal_SelectionChanged"/>
+        <Button Name="SubButton" Content="Subtract" HorizontalAlignment="Left" Margin="196,102,0,0" VerticalAlignment="Top" Width="87" Click="SubButton_Click" Height="35"/>
+        <Label Content="Remaining money this week:" HorizontalAlignment="Left" Margin="194,6,-3,0" VerticalAlignment="Top" Width="165"/>
+        <TextBox Name="RemainingWeekTextBox" HorizontalAlignment="Left" Height="23" Margin="196,32,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152"/>
+        <TextBox Name="TransactionTextBox" HorizontalAlignment="Left" Height="23" Margin="196,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153"/>
+        <Button Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Width="339" Click="QuitButton_Click" Height="32"/>
+        <Button Name="AccessPoolButton" Content="Access Pool" HorizontalAlignment="Left" Margin="196,142,0,0" VerticalAlignment="Top" Width="153" Height="30" Click="AccessPoolButton_Click"/>
+
+    </Grid>
+</Window>
